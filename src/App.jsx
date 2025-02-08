@@ -16,11 +16,13 @@ function App() {
 			const res = await fetch('https://checkip.amazonaws.com');
 			const data = await res.text();
 			setIp(data);
-			// const res = await fetch('https://web-api.nordvpn.com/v1/ips/info');
+
+			// const res = await fetch('https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod/');
 			// const data = await res.json();
-			// setIp(data.ip);
-			// setIsProtected(data.protected);
-			// setIsp(data.isp);
+			// const protectionData = data.protection;
+			// setIp(protectionData.ip);
+			// setIsProtected(protectionData.protected);
+			// setIsp(protectionData.isp);
 		})();
 	}, []);
 

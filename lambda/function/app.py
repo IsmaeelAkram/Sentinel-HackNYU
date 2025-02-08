@@ -25,15 +25,18 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
 
-    protected = requests.get("https://web-api.nordvpn.com/v1/ips/info")
-    data = protected.json()
-    ip = data["ip"]
-    isp = data["isp"]
-    protected = data["protected"]
+    policyUrl = event["queryStringParameters"]["policyUrl"]
+
+    # protected = requests.get("https://web-api.nordvpn.com/v1/ips/info")
+    # data = protected.json()
+    # ip = data["ip"]
+    # isp = data["isp"]
+    # protected = data["protected"]
 
     return {
         "statusCode": 200,
         "body": json.dumps(
-            {"protection": {"protected": protected, "ip": ip, "isp": isp}}
+            # {"protection": {"protected": protected, "ip": ip, "isp": isp}},
+            # {"policy": {"url": policyUrl}},
         ),
     }
