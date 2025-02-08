@@ -24,3 +24,10 @@
 .domain .last-checked {
     font-size: 15px;
 }
+
+.meter {
+    width: 217px;
+    height: 217px;
+    background-color: red;
+    border: 1px white solid;
+}
