@@ -1,3 +1,4 @@
+/*global chrome*/
 import Domain from './components/domain';
 import './App.css';
 import Score from './components/score';
@@ -8,6 +9,7 @@ function App() {
 	const [ip, setIp] = useState('Loading...');
 	const [isProtected, setIsProtected] = useState(false);
 	const [isp, setIsp] = useState('Loading...');
+	const [domain, setDomain] = useState('—');
 
 	useEffect(() => {
 		(async () => {
@@ -21,6 +23,24 @@ function App() {
 			// setIsp(data.isp);
 		})();
 	}, []);
+
+	useEffect(() => {
+		try {
+			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+				// since only one tab should be active and in the current window at once
+				// the return variable should only have one entry
+				var activeTab = tabs[0];
+				var activeTabUrl = activeTab.url;
+				const domain = new URL(activeTabUrl).hostname;
+				setDomain(domain);
+			});
+		} catch (error) {
+			console.log('Not in chrome');
+			setDomain('facebook.com');
+		}
+	}, []);
+
+	useEffect(() => {}, [domain]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -44,7 +64,7 @@ function App() {
 					</>
 				)}
 			</span>
-			<Domain domain="facebook.com" lastChecked="2 hours ago" />
+			<Domain domain={domain} lastChecked="2 hours ago" />
 			<Score score={score} />
 		</div>
 	);
