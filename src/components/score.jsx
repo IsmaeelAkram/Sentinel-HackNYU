@@ -5,7 +5,7 @@ function getArrowRotation(score) {
 function getColor(score) {
 	if (score <= 33) {
 		return '#FF471D';
-	} else if (score <= 66``) {
+	} else if (score <= 66) {
 		return '#F8B830';
 	} else {
 		return '#58D31B';
