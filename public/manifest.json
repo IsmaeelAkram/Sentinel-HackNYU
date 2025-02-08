@@ -1,18 +1,11 @@
 {
 	"manifest_version": 3,
 	"name": "Sentinel",
-	"version": "1.0.0",
-	"description": "A basic example extension with only required keys",
-	"browser_action": {
-		"default_popup": "index.html",
-		"default_icon": {
-			"16": "favicon-16x16.png",
-			"48": "favicon-48x48.png",
-			"128": "favicon-128x128.png"
-		}
+	"description": "Safety on the web.",
+	"version": "1.0",
+	"action": {
+		"default_popup": "index.html"
 	},
-	"icons": {
-		"48": "images/icon-48.png",
-		"128": "images/icon-128.png"
-	}
+	"host_permissions": ["https://*.example.com/"],
+	"permissions": ["tabs", "activeTab", "scripting"]
 }
