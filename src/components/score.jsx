@@ -1,3 +1,7 @@
+function getArrowRotation(score) {
+	return 90 + score;
+}
+
 function getColor(score) {
 	if (score <= 50) {
 		return '#FF471D';
@@ -43,6 +47,10 @@ export default function Score({ score }) {
 					</linearGradient>
 				</defs>
 			</svg>
+			<div
+				className="arrow"
+				style={{ transform: `translateY(-158.5px) rotate(${getArrowRotation(score)}deg)` }}
+			></div>
 			<div className="under">
 				<h2>Privacy Score</h2>
 				<p className="fraction">
