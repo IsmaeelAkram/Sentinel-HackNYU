@@ -15,6 +15,7 @@
     flex-direction: column;
     text-align: center;
     gap: 5px;
+    margin-bottom: 15px;
 }
 
 .domain p {
@@ -26,8 +27,31 @@
 }
 
 .meter {
-    width: 217px;
-    height: 217px;
-    background-color: red;
-    border: 1px white solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.meter .under {
+    transform: translateY(-90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.meter .under .fraction {
+    margin-top: 5px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.meter .under .fraction .numerator {
+    font-size: 40px;
+}
+
+.meter h2 {
+    font-size: 20px;
+    font-weight: 700;
 }

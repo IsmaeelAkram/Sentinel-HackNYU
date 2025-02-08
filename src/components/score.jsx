@@ -1,6 +1,16 @@
-export default function Score() {
+function getColor(score) {
+	if (score <= 50) {
+		return '#FF471D';
+	} else if (score <= 75) {
+		return '#F8B830';
+	} else {
+		return '#58D31B';
+	}
+}
+
+export default function Score({ score }) {
 	return (
-		<>
+		<div className="meter">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="217"
@@ -18,43 +28,7 @@ export default function Score() {
 					stroke-width="6"
 					mask="url(#path-1-inside-1_1_43)"
 				/>
-				<g filter="url(#filter0_d_1_43)">
-					<path
-						d="M109 108.492L157.113 36"
-						stroke="white"
-						stroke-width="10"
-						stroke-linecap="round"
-					/>
-				</g>
 				<defs>
-					<filter
-						id="filter0_d_1_43"
-						x="97.8995"
-						y="28.8995"
-						width="70.314"
-						height="94.6935"
-						filterUnits="userSpaceOnUse"
-						color-interpolation-filters="sRGB"
-					>
-						<feFlood flood-opacity="0" result="BackgroundImageFix" />
-						<feColorMatrix
-							in="SourceAlpha"
-							type="matrix"
-							values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-							result="hardAlpha"
-						/>
-						<feOffset dy="4" />
-						<feGaussianBlur stdDeviation="3.05" />
-						<feComposite in2="hardAlpha" operator="out" />
-						<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-						<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_43" />
-						<feBlend
-							mode="normal"
-							in="SourceGraphic"
-							in2="effect1_dropShadow_1_43"
-							result="shape"
-						/>
-					</filter>
 					<linearGradient
 						id="paint0_linear_1_43"
 						x1="-38.5"
@@ -69,6 +43,15 @@ export default function Score() {
 					</linearGradient>
 				</defs>
 			</svg>
-		</>
+			<div className="under">
+				<h2>Privacy Score</h2>
+				<p className="fraction">
+					<span className="numerator" style={{ color: getColor(score) }}>
+						{score}
+					</span>
+					/100
+				</p>
+			</div>
+		</div>
 	);
 }
