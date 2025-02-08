@@ -2,8 +2,8 @@ import './App.css';
 
 function App() {
 	return (
-		<div>
-			<h1>Sentinel</h1>
+		<div className="container">
+			<img src="/name.svg" alt="name" />
 		</div>
 	);
 }
