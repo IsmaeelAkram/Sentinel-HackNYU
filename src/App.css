@@ -8,6 +8,7 @@
 
 a {
     color: #fff;
+    font-weight: 700;
 }
 
 .name {
@@ -21,7 +22,8 @@ a {
 }
 
 .address {
-    color: #FF471D;
+    /* color: #FF471D; */
+    font-weight: 700;
 }
 
 .protection {
