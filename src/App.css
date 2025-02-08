@@ -1,7 +1,27 @@
 .container {
     background: linear-gradient(180deg, #2F89FF 0%, #1C5299 100%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 15px 61px;
+}
+
+.name {
+    margin-bottom: 15px;
+}
+
+.domain {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+}
+
+.domain p {
+    font-size: 20px;
+}
+
+.domain .last-checked {
+    font-size: 15px;
 }
