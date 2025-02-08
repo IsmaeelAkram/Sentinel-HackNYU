@@ -10,6 +10,7 @@ function App() {
 	const [isProtected, setIsProtected] = useState(false);
 	const [isp, setIsp] = useState('Loading...');
 	const [domain, setDomain] = useState('—');
+	const [policyLink, setPolicyLink] = useState('—');
 
 	useEffect(() => {
 		(async () => {
@@ -35,6 +36,31 @@ function App() {
 				var activeTabUrl = activeTab.url;
 				const domain = new URL(activeTabUrl).hostname;
 				setDomain(domain);
+
+				chrome.scripting.executeScript({
+					target: { tabId: activeTab.id },
+					function: () => {
+						const links = document.querySelectorAll('a');
+						// console.log('all links', links);
+						let privacyLink = null;
+
+						// Loop through the links to find the one with the text "Privacy"
+						links.forEach((link) => {
+							if (link.textContent.includes('Privacy')) {
+								privacyLink = link.href;
+							}
+						});
+
+						// Send the result back to the background script or React app
+						if (privacyLink) {
+							console.log('Privacy link found:', privacyLink);
+							chrome.runtime.sendMessage({ action: 'privacyLinkFound', url: privacyLink });
+						} else {
+							console.log('Privacy link not found');
+							chrome.runtime.sendMessage({ action: 'privacyLinkNotFound' });
+						}
+					},
+				});
 			});
 		} catch (error) {
 			console.log('Not in chrome');
@@ -42,7 +68,25 @@ function App() {
 		}
 	}, []);
 
-	useEffect(() => {}, [domain]);
+	useEffect(() => {
+		chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+			if (message.action === 'privacyLinkFound') {
+				setPolicyLink(message.url);
+			} else if (message.action === 'privacyLinkNotFound') {
+				setPolicyLink('Privacy link not found.');
+			}
+		});
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			const res = await fetch(
+				// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
+				'http://localhost:3000/?policyUrl=' + policyLink
+			);
+			const data = await res.json();
+		})();
+	}, [policyLink]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -68,6 +112,7 @@ function App() {
 			</span>
 			<Domain domain={domain} lastChecked="2 hours ago" />
 			<Score score={score} />
+			<p>Policy link: {policyLink}</p>
 		</div>
 	);
 }
