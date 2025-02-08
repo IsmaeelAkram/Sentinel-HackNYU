@@ -6,8 +6,36 @@
     padding: 15px 61px;
 }
 
+a {
+    color: #fff;
+}
+
 .name {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+.ip {
+    font-size: 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.address {
+    color: #FF471D;
+}
+
+.protection {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.red {
+    color: #FF471D;
+}
+
+.green {
+    color: #58D31B;
 }
 
 .domain {
@@ -24,6 +52,10 @@
 
 .domain .last-checked {
     font-size: 15px;
+}
+
+.domain .last-checked .checked-time {
+    font-weight: 700;
 }
 
 .meter {
@@ -57,7 +89,7 @@
 }
 
 .meter .arrow {
-    /* transform-origin: bottom; */
+    transform-origin: right center;
     width: 90px;
     height: 10px;
     border-radius: 50px;

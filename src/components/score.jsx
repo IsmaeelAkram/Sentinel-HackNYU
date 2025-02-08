@@ -1,5 +1,5 @@
 function getArrowRotation(score) {
-	return 90 + score;
+	return (score / 100) * 180;
 }
 
 function getColor(score) {
@@ -49,7 +49,9 @@ export default function Score({ score }) {
 			</svg>
 			<div
 				className="arrow"
-				style={{ transform: `translateY(-158.5px) rotate(${getArrowRotation(score)}deg)` }}
+				style={{
+					transform: `translateY(-120px) translateX(-45px) rotate(${getArrowRotation(score)}deg)`,
+				}}
 			></div>
 			<div className="under">
 				<h2>Privacy Score</h2>
