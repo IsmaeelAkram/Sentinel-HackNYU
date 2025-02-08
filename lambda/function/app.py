@@ -1,6 +1,6 @@
 import json
 
-# import requests
+import requests
 
 
 def lambda_handler(event, context):
@@ -25,18 +25,15 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
 
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    protected = requests.get("https://web-api.nordvpn.com/v1/ips/info")
+    data = protected.json()
+    ip = data["ip"]
+    isp = data["isp"]
+    protected = data["protected"]
 
     return {
         "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
+        "body": json.dumps(
+            {"protection": {"protected": protected, "ip": ip, "isp": isp}}
+        ),
     }
