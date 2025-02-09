@@ -88,7 +88,8 @@ function App() {
 			);
 			const data = await res.json();
 			// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
-			setScore(data.score);
+			setScore(data.policy.score);
+			setConcerns(data.policy.concerns);
 		})();
 	}, [policyLink]);
 
