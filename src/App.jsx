@@ -140,15 +140,25 @@ function App() {
 				)}
 			</span>
 			<Domain domain={domain} lastChecked={lastScanned} />
-			<Score score={score} />
 
-			<div className="under">
-				<h1 className="concerns-header">Concerns</h1>
-				{concerns.map((concern) => (
-					<Concern concernTitle={concern.title} concernText={concern.description} />
-				))}
-				{concerns.length === 0 && <p>No concerns found.</p>}
-			</div>
+			{score === 0 ? (
+				<>
+					<img src="loading.gif" className="loading" />
+					<p>Scanning...</p>
+				</>
+			) : (
+				<>
+					<Score score={score} />
+
+					<div className="under">
+						<h1 className="concerns-header">Concerns</h1>
+						{concerns.map((concern) => (
+							<Concern concernTitle={concern.title} concernText={concern.description} />
+						))}
+						{concerns.length === 0 && <p>No concerns found.</p>}
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
