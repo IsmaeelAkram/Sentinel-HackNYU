@@ -3,6 +3,7 @@ import Domain from './components/domain';
 import './App.css';
 import Score from './components/score';
 import { useEffect, useState } from 'react';
+import Concern from './components/Concern';
 
 function App() {
 	const [score, setScore] = useState(0);
@@ -112,7 +113,11 @@ function App() {
 			</span>
 			<Domain domain={domain} lastChecked="2 hours ago" />
 			<Score score={score} />
-			<p>Policy link: {policyLink}</p>
+			
+			<div className="under">
+			<h1 className = "concerns-header">Concerns</h1>
+			<Concern concernTitle="Concern 1" concernText=" I hate ismaeel i hate ismaeel i hate ismaeel i hate ismaeel akram" />
+			<Concern concernTitle="Concern 2" concernText="More trash" /></div>
 		</div>
 	);
 }
