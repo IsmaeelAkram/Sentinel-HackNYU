@@ -1,8 +1,12 @@
+import dotenv
+
+dotenv.load_dotenv()
 import json
 import os
 
 import bs4
 import requests
+from pymongo import MongoClient
 
 
 def lambda_handler(event, context):
@@ -26,6 +30,9 @@ def lambda_handler(event, context):
 
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
+    client = MongoClient(os.getenv("MONGO_URI"))
+    db = client["sentinel"]
+    collection = db["scans"]
 
     # protected = requests.get("https://web-api.nordvpn.com/v1/ips/info")
     # data = protected.json()
@@ -54,7 +61,23 @@ def lambda_handler(event, context):
                 }
             ),
         }
+
     print("Policy URL: ", policyUrl)
+
+    # Check if scans collection already contains scan with this policy URL
+    scan = collection.find_one({"url": policyUrl})
+    if scan:
+        print("Returning privacy policy from cache...")
+        return {
+            "statusCode": 200,
+            "body": json.dumps(
+                {
+                    "message": "Sentinel API - Go HackNYU!",
+                    "policy": scan["data"],
+                }
+            ),
+        }
+
     response = requests.get(policyUrl)
     soup = bs4.BeautifulSoup(response.text, "html.parser")
     p_tags = soup.find_all("p")
@@ -87,6 +110,7 @@ def lambda_handler(event, context):
     print("---")
     print(res)
     data = json.loads(res)
+    collection.insert_one({"url": policyUrl, "policy": policyText, "data": data})
 
     return {
         "statusCode": 200,

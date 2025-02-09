@@ -81,12 +81,15 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
+			console.log('Scanning policy link (unless empty):', policyLink);
 			if (policyLink === '—') return;
+			console.log('Fetching scan data...');
 			const res = await fetch(
-				`https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
-				// 'http://localhost:3000/?policyUrl=' + policyLink
+				// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
+				'http://localhost:3000/?policyUrl=' + policyLink
 			);
 			const data = await res.json();
+			console.log('Scan data', data);
 			// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
 			setScore(data.policy.score);
 			setConcerns(data.policy.concerns);
