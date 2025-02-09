@@ -9,7 +9,7 @@ function App() {
 	const [score, setScore] = useState(0);
 	const [ip, setIp] = useState('Loading...');
 	const [isProtected, setIsProtected] = useState(false);
-	const [isp, setIsp] = useState('Loading...');
+	const [concerns, setConcerns] = useState([]);
 	const [domain, setDomain] = useState('—');
 	const [policyLink, setPolicyLink] = useState('—');
 
@@ -81,20 +81,23 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
+			if (policyLink === '—') return;
 			const res = await fetch(
-				// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
-				'http://localhost:3000/?policyUrl=' + policyLink
+				`https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
+				// 'http://localhost:3000/?policyUrl=' + policyLink
 			);
 			const data = await res.json();
+			// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
+			setScore(data.score);
 		})();
 	}, [policyLink]);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setScore((prev) => (prev + 1) % 101);
-		}, 10);
-		return () => clearInterval(interval);
-	}, []);
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		setScore((prev) => (prev + 1) % 101);
+	// 	}, 10);
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	return (
 		<div className="container flex justify-center items-center">
@@ -113,11 +116,14 @@ function App() {
 			</span>
 			<Domain domain={domain} lastChecked="2 hours ago" />
 			<Score score={score} />
-			
+
 			<div className="under">
-			<h1 className = "concerns-header">Concerns</h1>
-			<Concern concernTitle="Concern 1" concernText=" I hate ismaeel i hate ismaeel i hate ismaeel i hate ismaeel akram" />
-			<Concern concernTitle="Concern 2" concernText="More trash" /></div>
+				<h1 className="concerns-header">Concerns</h1>
+				{concerns.map((concern) => (
+					<Concern concernTitle={concern.title} concernText={concern.description} />
+				))}
+				{concerns.length === 0 && <p>No concerns found.</p>}
+			</div>
 		</div>
 	);
 }
