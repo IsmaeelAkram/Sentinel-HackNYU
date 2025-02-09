@@ -5,6 +5,7 @@ import './App.css';
 import Score from './components/score';
 import { useEffect, useState } from 'react';
 import Concern from './components/Concern';
+import formatIsoDate from './utils/formatIsoDate';
 
 function App() {
 	const [score, setScore] = useState(0);
@@ -12,6 +13,7 @@ function App() {
 	const [isProtected, setIsProtected] = useState(false);
 	const [concerns, setConcerns] = useState([]);
 	const [domain, setDomain] = useState('—');
+	const [lastScanned, setLastScanned] = useState('— hours ago');
 	const [policyLink, setPolicyLink] = useState('—');
 
 	useEffect(() => {
@@ -86,14 +88,15 @@ function App() {
 			if (policyLink === '—') return;
 			console.log('Fetching scan data...');
 			const res = await fetch(
-				// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
-				'http://localhost:3000/?policyUrl=' + policyLink
+				`https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
+				// 'http://localhost:3000/?policyUrl=' + policyLink
 			);
 			const data = await res.json();
 			console.log('Scan data', data);
 			// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
 			setScore(data.policy.score);
 			setConcerns(data.policy.concerns);
+			setLastScanned(formatIsoDate(data.scanned_at));
 		})();
 	}, [policyLink]);
 
@@ -136,7 +139,7 @@ function App() {
 					</>
 				)}
 			</span>
-			<Domain domain={domain} lastChecked="2 hours ago" />
+			<Domain domain={domain} lastChecked={lastScanned} />
 			<Score score={score} />
 
 			<div className="under">

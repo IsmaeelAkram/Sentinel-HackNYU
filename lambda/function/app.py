@@ -1,6 +1,7 @@
 import dotenv
 
 dotenv.load_dotenv()
+import datetime
 import json
 import os
 
@@ -77,6 +78,7 @@ def lambda_handler(event, context):
                 {
                     "message": "Sentinel API - Go HackNYU!",
                     "policy": scan["data"],
+                    "scanned_at": scan["scanned_at"],
                 }
             ),
         }
@@ -110,10 +112,23 @@ def lambda_handler(event, context):
     )
     data = chat_res.json()
     res = data["choices"][0]["message"]["content"]
+
+    utc_now = datetime.datetime.now()
+    est_offset = datetime.timedelta(hours=-5)
+    est_now = utc_now + est_offset
+    scanned_at = est_now.isoformat()
+
     print("---")
     print(res)
     data = json.loads(res)
-    collection.insert_one({"url": policyUrl, "policy": policyText, "data": data})
+    collection.insert_one(
+        {
+            "url": policyUrl,
+            "policy": policyText,
+            "data": data,
+            "scanned_at": scanned_at,
+        }
+    )
 
     return {
         "statusCode": 200,
@@ -123,6 +138,7 @@ def lambda_handler(event, context):
                 "message": "Sentinel API - Go HackNYU!",
                 # {"protection": {"protected": protected, "ip": ip, "isp": isp}},
                 "policy": data,
+                "scanned_at": scanned_at,
             }
         ),
     }
