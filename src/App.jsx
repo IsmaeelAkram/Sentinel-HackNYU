@@ -57,19 +57,6 @@ function App() {
 						if (privacyLink) {
 							console.log('Privacy link found:', privacyLink);
 							chrome.runtime.sendMessage({ action: 'privacyLinkFound', url: privacyLink });
-
-							(async () => {
-								console.log('Fetching scan data...');
-								const res = await fetch(
-									// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
-									'http://localhost:3000/?policyUrl=' + privacyLink
-								);
-								const data = await res.json();
-								console.log('Scan data', data);
-								// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
-								setScore(data.policy.score);
-								setConcerns(data.policy.concerns);
-							})();
 						} else {
 							console.log('Privacy link not found');
 							chrome.runtime.sendMessage({ action: 'privacyLinkNotFound' });
@@ -92,6 +79,23 @@ function App() {
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		(async () => {
+			console.log('Scanning policy link (unless empty):', policyLink);
+			if (policyLink === '—') return;
+			console.log('Fetching scan data...');
+			const res = await fetch(
+				// `https://t3jc7d49gc.execute-api.us-east-1.amazonaws.com/Prod?policyUrl=${policyLink}`
+				'http://localhost:3000/?policyUrl=' + policyLink
+			);
+			const data = await res.json();
+			console.log('Scan data', data);
+			// {'concerns': [{'title': '', 'description': ''}, ...], 'score': 0-100}
+			setScore(data.policy.score);
+			setConcerns(data.policy.concerns);
+		})();
+	}, [policyLink]);
 
 	// useEffect(() => {
 	// 	(async () => {

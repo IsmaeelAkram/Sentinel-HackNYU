@@ -44,6 +44,7 @@ def lambda_handler(event, context):
     if not params:
         return {
             "statusCode": 400,
+            "headers": {"Access-Control-Allow-Origin": "*"},
             "body": json.dumps(
                 {
                     "message": "Sentinel API - No parameters provided",
@@ -55,6 +56,7 @@ def lambda_handler(event, context):
     if not policyUrl:
         return {
             "statusCode": 400,
+            "headers": {"Access-Control-Allow-Origin": "*"},
             "body": json.dumps(
                 {
                     "message": "Sentinel API - No policy URL provided",
@@ -70,6 +72,7 @@ def lambda_handler(event, context):
         print("Returning privacy policy from cache...")
         return {
             "statusCode": 200,
+            "headers": {"Access-Control-Allow-Origin": "*"},
             "body": json.dumps(
                 {
                     "message": "Sentinel API - Go HackNYU!",
@@ -114,6 +117,7 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
+        "headers": {"Access-Control-Allow-Origin": "*"},
         "body": json.dumps(
             {
                 "message": "Sentinel API - Go HackNYU!",
